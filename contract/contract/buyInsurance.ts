@@ -11,7 +11,8 @@ class Company implements Serializable{
     introduce: string;//简介
 
     prints(): void {
-        Log.s(this.introduce).s("\nname = ").s(this.name).s(",\nbalance = ").i(this.balance).s(",\ncontribution = ").i(this.contribution);
+        Log.s(this.introduce).s("\nname = ").s(this.name).s("\n");
+        Log.s("balance = ").i(this.balance).s(",\ncontribution = ").i(this.contribution);
     }
 }
 class Consumer implements Serializable{
@@ -26,7 +27,8 @@ class Consumer implements Serializable{
     }
 
     prints(): void {
-        Log.s("name = ").s(this.name).s(",\nThe history of purchase insurance:\n").s(this.buyHistory);
+        Log.s("name = ").s(this.name).s("\n");
+        Log.s("The history of purchase insurance:\n").s(this.buyHistory);
     }
 }
 class Insurance implements Serializable{
@@ -40,7 +42,8 @@ class Insurance implements Serializable{
     provision: string;//true是满足赔保条件，false是不予赔保
 
     prints(): void {
-        Log.s("name = ").s(this.name).s(",id = ").i(this.id).s(",\nprice = ").i(this.price).s(",\nremaining = ").i(this.remaining);
+        Log.s("name = ").s(this.name).s(",id = ").i(this.id).s("\n");
+        Log.s("price = ").i(this.price).s(",\nremaining = ").i(this.remaining);
     }
 }
 class BuyInsurance implements Serializable{//购买保险的数据类型，每个对象作为购买历史的一条
