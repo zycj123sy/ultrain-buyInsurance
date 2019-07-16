@@ -110,7 +110,7 @@ class InsContract extends Contract {
     }
     
     @action
-    addInsurance(insurance: u32,id: u32,name: string,ofCompany: string,price: u32,remaining: u32,money: u32): void {
+    addInsurance(insurance: u32,name: string,ofCompany: string,price: u32,remaining: u32,money: u32): void {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add insurances.");
 
         let c = new Insurance();
@@ -143,7 +143,10 @@ class InsContract extends Contract {
                     newrecord.id=id;
                     newrecord.total=total;
                     newrecord.indemnifyOrNot="false";
-                    //这里缺一段代码：把这条记录加入到该投保者的购买记录中，没有找到相应的数组操作。。
+                    let con = new Consumer();
+                    this.consumersDB.get(id,con);
+                    con.buyHistory[con.buyHistory.length]=newrecord;
+                    this.consumersDB.modify(con);
                     Log.s(RNAME(consumer)).s(" successfully purchased").i(total).s(" insurance.id=").i(id);
                 }else{
                     ultrain_assert(false, "The remaining is not enough.");
@@ -154,4 +157,5 @@ class InsContract extends Contract {
         }else{
             ultrain_assert(false, "User does not exist.");
         }
+    }
 }
