@@ -16,15 +16,14 @@ class Company implements Serializable{
     }
 }
 class Consumer implements Serializable{
-    @primaryid
-    name: account_name = 0;
+    name: string;
     sex: string;
     age: u8;
     buyHistory: BuyInsurance[];//购买历史
 
-    primaryKey(): string {  
-        return RNAME(this.name);  
-    }
+    primaryKey(): u64 {
+        return NAME(this.name);
+    };
 
     prints(): void {
         Log.s("name = ").s(this.name).s("\n");
@@ -92,7 +91,7 @@ class InsContract extends Contract {
     }
     
     @action
-    addConsumer(consumer: account_name,sex: string,age: u8): void {
+    addConsumer(consumer: string,sex: string,age: u8): void {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add consumers.");
 
         let c = new Consumer();
@@ -127,7 +126,7 @@ class InsContract extends Contract {
         }
     }
     @action
-    public buyIns(consumer: account_name,id: u32,total: u32):void{
+    public buyIns(consumer: string,id: u32,total: u32):void{
         let ins = new Insurance();
         let existing1 = this.consumersDB.exists(consumer);
         let existing2 = this.insurancesDB.exists(id);
