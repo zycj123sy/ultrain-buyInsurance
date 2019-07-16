@@ -26,5 +26,5 @@
   "dependencies": {
     "ultrain-ts-lib": "^0.2.1"
   },
-  "contract_name": "MyContract"
+  "contract_name": "buyInsurance"
 }
