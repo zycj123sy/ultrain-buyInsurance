@@ -58,9 +58,9 @@ it("insurances", async () => {//创建三个保险
     const u3 = createU3(config);
 
     await u3.transaction(creator, c => {
-      c.addInsurance(666,"work injury insurance","TaiPingyang",100,100,1000, { authorization: [`ben@active`] });
-      c.addInsurance(996,"ddl insurance","RenShou", 100,100,1000,{ authorization: [`ben@active`] });
-      c.addInsurance(1010,"medical insurance","PingAn", 100,100,1000,{ authorization: [`ben@active`] });
+      c.addInsurance("666","work injury insurance","TaiPingyang",100,100,1000, { authorization: [`ben@active`] });
+      c.addInsurance("996","ddl insurance","RenShou", 100,100,1000,{ authorization: [`ben@active`] });
+      c.addInsurance("101","medical insurance","PingAn", 100,100,1000,{ authorization: [`ben@active`] });
     });
 
     U3Utils.test.wait(3000);
@@ -90,7 +90,7 @@ it("insurances", async () => {//创建三个保险
     });
 
     let contract = await u3.contract(creator);
-    await contract.buyIns("ZHAI",996,6, { authorization: [`ZHAI@active`] });
+    await contract.buyIns("ZHAI","996",6, { authorization: [`ZHAI@active`] });
 
     U3Utils.test.wait(3000);
 
