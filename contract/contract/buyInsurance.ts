@@ -4,7 +4,6 @@ import { Action } from "ultrain-ts-lib/src/action";
 import { Log } from "ultrain-ts-lib/src/log";
 
 class Company implements Serializable{
-
     name: string;//企业名
     balance: u32;//余额
     contribution: u32;//贡献
@@ -20,7 +19,6 @@ class Company implements Serializable{
     }
 }
 class Consumer implements Serializable{
-
     name: string;
     sex: string;
     age: u8;
@@ -83,15 +81,15 @@ class InsContract extends Contract {
     }
 
     @action
-    addCompany(company: string,balance: u32,contribution: u32,introduce: string): void {
+    addCompany(name: string,balance: u32,contribution: u32,introduce: string): void {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add companys.");
 
         let c = new Company();
-        c.name = company;
+        c.name = name;
         c.balance=balance;
         c.contribution=contribution;
         c.introduce=introduce;
-        let existing = this.companysDB.exists(company);
+        let existing = this.companysDB.exists(name);
         if (!existing) {
             this.companysDB.emplace(c);
         } else {
@@ -100,14 +98,14 @@ class InsContract extends Contract {
     }
     
     @action
-    addConsumer(consumer: string,sex: string,age: u8): void {
+    addConsumer(name: string,sex: string,age: u8): void {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add consumers.");
 
         let c = new Consumer();
-        c.name = consumer;
+        c.name = name;
         c.sex=sex;
         c.age=age;
-        let existing = this.consumersDB.exists(consumer);
+        let existing = this.consumersDB.exists(name);
         if (!existing) {
             this.consumersDB.emplace(c);
         } else {
@@ -135,9 +133,9 @@ class InsContract extends Contract {
         }
     }
     @action
-    public buyIns(consumer: string,id: string,total: u32):void{
+    public buyIns(name: string,id: string,total: u32):void{
         let ins = new Insurance();
-        let existing1 = this.consumersDB.exists(consumer);
+        let existing1 = this.consumersDB.exists(name);
         let existing2 = this.insurancesDB.exists(id);
         let a = this.insurancesDB.get(id,ins);
         let existing3 = total < ins.remaining;
@@ -150,10 +148,10 @@ class InsContract extends Contract {
                     newrecord.total=total;
                     newrecord.indemnifyOrNot="false";
                     let con = new Consumer();
-                    this.consumersDB.get(id,con);
+                    this.consumersDB.get(name,con);
                     con.buyHistory[con.buyHistory.length]=newrecord;
                     this.consumersDB.modify(con);
-                    Log.s(RNAME(consumer)).s(" successfully purchased").i(total).s(" insurance.id=").i(id);
+                    Log.s(RNAME(name)).s(" successfully purchased").i(total).s(" insurance.id=").i(id);
                 }else{
                     ultrain_assert(false, "The remaining is not enough.");
                 }
