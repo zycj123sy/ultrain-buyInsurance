@@ -32,7 +32,6 @@ class Consumer implements Serializable{
     }
 }
 class Insurance implements Serializable{
-    @primaryid
     id: u32;//保险编号
     name: string;//保险名
     ofCompany: string;//保险所属公司
