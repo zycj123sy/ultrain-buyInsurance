@@ -1,7 +1,8 @@
 import { Contract } from "ultrain-ts-lib/src/contract";
-import { RNAME, NAME } from "ultrain-ts-lib/src/account";
+import { NAME, RNAME, ACCOUNT } from "ultrain-ts-lib/src/account";
 import { Action } from "ultrain-ts-lib/src/action";
 import { Log } from "ultrain-ts-lib/src/log";
+import { Return } from "ultrain-ts-lib/src/return";
 
 class Company implements Serializable{
     name: string;//企业名
@@ -81,7 +82,7 @@ class InsContract extends Contract {
     }
 
     @action
-    addCompany(name: string,balance: u32,contribution: u32,introduce: string): void {
+    addCompany(name: account_name,balance: u32,contribution: u32,introduce: string): void {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add companys.");
 
         let c = new Company();
@@ -98,7 +99,7 @@ class InsContract extends Contract {
     }
     
     @action
-    addConsumer(name: string,sex: string,age: u8): void {
+    addConsumer(name: account_name,sex: string,age: u8): void {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add consumers.");
 
         let c = new Consumer();
@@ -114,18 +115,18 @@ class InsContract extends Contract {
     }
     
     @action
-    addInsurance(insurance: string,name: string,ofCompany: string,price: u32,remaining: u32,money: u32): void {
+    addInsurance(id: account_name,name: string,ofCompany: string,price: u32,remaining: u32,money: u32): void {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add insurances.");
 
         let c = new Insurance();
-        c.id = insurance;
+        c.id = id;
         c.name=name;
         c.ofCompany=ofCompany;
         c.price=price;
         c.remaining=remaining;
         c.money=money;
         c.provision="false";
-        let existing = this.insurancesDB.exists(insurance);
+        let existing = this.insurancesDB.exists(id);
         if (!existing) {
             this.insurancesDB.emplace(c);
         } else {
@@ -133,7 +134,7 @@ class InsContract extends Contract {
         }
     }
     @action
-    public buyIns(name: string,id: string,total: u32):void{
+    public buyIns(name: account_name,id: account_name,total: u32):void{
         let ins = new Insurance();
         let existing1 = this.consumersDB.exists(name);
         let existing2 = this.insurancesDB.exists(id);
