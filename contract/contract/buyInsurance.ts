@@ -23,7 +23,7 @@ class Consumer implements Serializable{
     buyHistory: BuyInsurance[];//购买历史
 
     primaryKey(): string {  
-        return NAME(this.name);  
+        return RNAME(this.name);  
     }
 
     prints(): void {
