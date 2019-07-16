@@ -128,7 +128,7 @@ class InsContract extends Contract {
         }
     }
     @action
-    pubilic buyIns(consumer: account_name,id: u32,total: u32):void{
+    public buyIns(consumer: account_name,id: u32,total: u32):void{
         let ins = new Insurance();
         let existing1 = this.consumersDB.exists(consumer);
         let existing2 = this.insurancesDB.exists(id);
