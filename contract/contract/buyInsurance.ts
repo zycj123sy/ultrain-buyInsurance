@@ -100,7 +100,6 @@ class InsContract extends Contract {
         c.name = consumer;
         c.sex=sex;
         c.age=age;
-        c.buyHistory=BuyInsurance[];
         let existing = this.consumersDB.exists(consumer);
         if (!existing) {
             this.consumersDB.emplace(c);
