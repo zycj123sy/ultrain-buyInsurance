@@ -4,11 +4,15 @@ import { Action } from "ultrain-ts-lib/src/action";
 import { Log } from "ultrain-ts-lib/src/log";
 
 class Company implements Serializable{
-    @primaryid
-    name: account_name = 0;//企业名
+
+    name: string;//企业名
     balance: u32;//余额
     contribution: u32;//贡献
     introduce: string;//简介
+
+    primaryKey(): u64 {
+        return NAME(this.name);
+    };
 
     prints(): void {
         Log.s(this.introduce).s("\nname = ").s(this.name).s("\n");
@@ -16,6 +20,7 @@ class Company implements Serializable{
     }
 }
 class Consumer implements Serializable{
+
     name: string;
     sex: string;
     age: u8;
@@ -31,7 +36,7 @@ class Consumer implements Serializable{
     }
 }
 class Insurance implements Serializable{
-    id: u32;//保险编号
+    id: string;//保险编号
     name: string;//保险名
     ofCompany: string;//保险所属公司
     price: u32;//保险价格
@@ -39,13 +44,17 @@ class Insurance implements Serializable{
     money: u32;//赔保金额
     provision: string;//true是满足赔保条件，false是不予赔保
 
+    primaryKey(): u64 {
+        return NAME(this.id);
+    };
+
     prints(): void {
         Log.s("name = ").s(this.name).s(",id = ").i(this.id).s("\n");
         Log.s("price = ").i(this.price).s(",\nremaining = ").i(this.remaining);
     }
 }
 class BuyInsurance implements Serializable{//购买保险的数据类型，每个对象作为购买历史的一条
-    id: u32;
+    id: string;
     total: u32;//购买保险份数
     indemnifyOrNot: string;//true是已经赔保，false是尚未赔保
 }
@@ -74,7 +83,7 @@ class InsContract extends Contract {
     }
 
     @action
-    addCompany(company: account_name,balance: u32,contribution: u32,introduce: string): void {
+    addCompany(company: string,balance: u32,contribution: u32,introduce: string): void {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add companys.");
 
         let c = new Company();
@@ -107,7 +116,7 @@ class InsContract extends Contract {
     }
     
     @action
-    addInsurance(insurance: u32,name: string,ofCompany: string,price: u32,remaining: u32,money: u32): void {
+    addInsurance(insurance: string,name: string,ofCompany: string,price: u32,remaining: u32,money: u32): void {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add insurances.");
 
         let c = new Insurance();
@@ -126,7 +135,7 @@ class InsContract extends Contract {
         }
     }
     @action
-    public buyIns(consumer: string,id: u32,total: u32):void{
+    public buyIns(consumer: string,id: string,total: u32):void{
         let ins = new Insurance();
         let existing1 = this.consumersDB.exists(consumer);
         let existing2 = this.insurancesDB.exists(id);
