@@ -86,7 +86,7 @@ class InsContract extends Contract {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add companys.");
 
         let c = new Company();
-        c.name = name;
+        c.name = RNAME(name);
         c.balance=balance;
         c.contribution=contribution;
         c.introduce=introduce;
@@ -103,7 +103,7 @@ class InsContract extends Contract {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add consumers.");
 
         let c = new Consumer();
-        c.name = name;
+        c.name = RNAME(name);
         c.sex=sex;
         c.age=age;
         let existing = this.consumersDB.exists(name);
@@ -119,7 +119,7 @@ class InsContract extends Contract {
         ultrain_assert(Action.sender == this.receiver, "only contract owner can add insurances.");
 
         let c = new Insurance();
-        c.id = id;
+        c.id =RNAME(id);
         c.name=name;
         c.ofCompany=ofCompany;
         c.price=price;
@@ -145,7 +145,7 @@ class InsContract extends Contract {
                 if(existing3){
                     ins.remaining-=total;
                     let newrecord= new BuyInsurance();
-                    newrecord.id=id;
+                    newrecord.id=RNAME(id);
                     newrecord.total=total;
                     newrecord.indemnifyOrNot="false";
                     let con = new Consumer();
